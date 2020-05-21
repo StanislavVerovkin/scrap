@@ -10,7 +10,7 @@ const offersRoutes = require( './routes/offers' );
 const app = express();
 
 mongoose.connect( keys.mongoURI, { useFindAndModify: false, useNewUrlParser: true, useUnifiedTopology: true } )
-  .then( () => console.log( 'Connect to MongoDB done' ) )
+  .then( () => console.log( 'Connect to MongoDB done!' ) )
   .catch( ( err ) => console.log( err ) );
 
 app.use( cors() );
