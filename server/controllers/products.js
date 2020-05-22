@@ -2,9 +2,9 @@ const constants = require( '../helpers/constants' );
 
 const { parseSearchResultsPage } = require( '../helpers/parse' );
 
-module.exports.getProductsBySearch = ( req, res ) => {
+const searchUrl = `${constants.BASE_URL}/sr/?q=`;
 
-  const searchUrl = `${constants.BASE_URL}/sr/?q=`;
+module.exports.getProductsBySearch = ( req, res ) => {
 
   const query = req.params.query;
   const page = req.params.page;
@@ -13,5 +13,5 @@ module.exports.getProductsBySearch = ( req, res ) => {
 
   parseSearchResultsPage( url )
     .then( ( products ) => res.status( 200 ).json( products ) )
-    .catch( ( e ) => res.status( 404 ).json( e ) )
+    .catch( () => res.status( 404 ).json( [] ) )
 };
