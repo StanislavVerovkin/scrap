@@ -27,6 +27,7 @@ export default {
         commit( 'setProducts', data );
         commit( 'setLoading', false );
       } catch ( e ) {
+        commit( 'setProducts', [] );
         commit( 'setLoading', false );
       }
     },

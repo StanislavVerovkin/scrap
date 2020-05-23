@@ -22,8 +22,8 @@ const parseSearchResultsPage = async ( url ) => {
     const title = $element.find( '.item-info > p > a' ).text().trim();
     const description = $element.find( '.item-info .text > p' ).text().trim();
     const image = $element.find( '.img-product' ).attr( 'src' );
-    const price = $element.find( 'div.item-price.stick-bottom > div:nth-child(1) > div.price-md > span' ).text().replace('грн', '');
-    const priceDiapason = $element.find( 'div.item-price.stick-bottom > div:nth-child(1) > div.text-sm' ).text().trim().replace('грн', '');
+    const price = $element.find( 'div.item-price.stick-bottom > div:nth-child(1) > div.price-md > span' ).text().replace( 'грн', '' );
+    const priceDiapason = $element.find( 'div.item-price.stick-bottom > div:nth-child(1) > div.text-sm' ).text().trim().replace( 'грн', '' );
     const offersUrl = $element.find( 'div.item-price.stick-bottom > div:nth-child(2) > a' ).attr( 'href' ).replace( /\/$/, '' );
 
     const product = {
@@ -39,7 +39,7 @@ const parseSearchResultsPage = async ( url ) => {
 
   } );
 
-  products.total_count = totalCount ? parseInt(totalCount, 10) : products.list.length;
+  products.total_count = totalCount ? parseInt( totalCount, 10 ) : products.list.length;
 
   return products;
 
@@ -49,12 +49,16 @@ const parseOffersResultsPage = async ( pageContent ) => {
 
   const data = {
     list: [],
-    productImage: ''
+    productImage: '',
+    productTitle: '',
+    productDescription: '',
   };
 
   const $ = await cheerio.load( pageContent );
 
   const productImage = $( 'div.zg-canvas-box-img > img' ).attr( 'src' );
+  const productTitle = $( 'div.heading > h1' ).text().trim();
+  const productDescription = $( 'div.resume-info.cell-6.cell-sm > div > div:nth-child(2) > div > div.text' ).text().trim();
 
   await $( '.offers-item' ).each( ( i, element ) => {
 
@@ -68,7 +72,7 @@ const parseOffersResultsPage = async ( pageContent ) => {
     const price = $element.find( 'a > span.price-format > span.value' ).text().replace( /\s+/g, " " ).split( " " ).join( "" );
 
     const offer = {
-      storeImage,
+      storeImage: `${constants.BASE_URL}${storeImage}`,
       title,
       rating,
       guarantee,
@@ -81,6 +85,8 @@ const parseOffersResultsPage = async ( pageContent ) => {
   } );
 
   data.productImage = productImage;
+  data.productTitle = productTitle;
+  data.productDescription = productDescription;
 
   return data;
 

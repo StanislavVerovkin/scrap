@@ -7,22 +7,21 @@
         </div>
         <div class="row">
             <div class="col-xl-12">
-                <DataTable/>
+                <ProductsTable/>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-  import DataTable from '@/components/DataTable';
   import SearchInput from "@/components/SearchInput";
+  import ProductsTable from "@/components/ProductsTable";
 
   export default {
     name: 'Home',
-
     components: {
+      ProductsTable,
       SearchInput,
-      DataTable
     }
   }
 </script>

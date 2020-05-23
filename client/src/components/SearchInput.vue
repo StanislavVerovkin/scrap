@@ -21,7 +21,7 @@
       }
     },
     methods: {
-      async search () {
+      search () {
         const request = {
           page: this.page,
           query: this.query

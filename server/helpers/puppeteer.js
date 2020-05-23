@@ -8,7 +8,8 @@ const LAUNCH_PUPPETEER_OPTS = {
     '--disable-accelerated-2d-canvas',
     '--disable-gpu',
     '--window-size=1920x1080'
-  ]
+  ],
+  headless: true
 };
 
 const PAGE_PUPPETEER_OPTS = {
@@ -19,23 +20,7 @@ const PAGE_PUPPETEER_OPTS = {
 
 class PuppeteerHandler {
 
-  constructor () {
-    this.browser = null;
-  }
-
-  async initBrowser () {
-    this.browser = await puppeteer.launch( LAUNCH_PUPPETEER_OPTS );
-  }
-
-  closeBrowser () {
-    this.browser.close();
-  }
-
   async getPageContent ( url ) {
-
-    if ( !this.browser ) {
-      await this.initBrowser();
-    }
 
     try {
       const browser = await puppeteer.launch( LAUNCH_PUPPETEER_OPTS );
@@ -45,9 +30,13 @@ class PuppeteerHandler {
       await page.goto( url, PAGE_PUPPETEER_OPTS );
       await page.waitForSelector( '#page-product' );
 
-      return await page.evaluate( () => {
+      const content = await page.evaluate( () => {
         return document.querySelector( '#page-product' ).innerHTML;
       } );
+
+      await browser.close();
+
+      return content;
 
     } catch ( err ) {
       throw err;

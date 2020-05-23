@@ -35,8 +35,6 @@ module.exports.getProductByOffers = ( req, res ) => {
 
         const pageContent = await puppeteer.getPageContent( url );
 
-        await puppeteer.closeBrowser();
-
         parseOffersResultsPage( pageContent )
           .then( data => {
 
@@ -61,14 +59,14 @@ module.exports.getProductByOffers = ( req, res ) => {
 
       const pageContent = await puppeteer.getPageContent( url );
 
-      await puppeteer.closeBrowser();
-
       parseOffersResultsPage( pageContent, category, product )
         .then( data => {
 
           new Offer( {
             list: data.list,
             productImage: data.productImage,
+            productTitle: data.productTitle,
+            productDescription: data.productDescription,
             id: `${category}/${product}`,
             dateCreated: new Date(),
           } ).save();
